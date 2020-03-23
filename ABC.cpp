@@ -5,8 +5,7 @@ Nod::Nod(int val){this->val=val;st=dr=NULL;}
 int Nod::get_val()const{return val;}
 Nod& Nod::get_st()const{return *st;}
 Nod& Nod::get_dr()const{return *dr;}
-
-
+void Nod::operator =(Nod a){val=a.val;st=a.st;dr=a.dr;}
 void ABC::operator +(int x){
     if(root==NULL)
         root = new Nod(x);
@@ -101,7 +100,7 @@ void ABC::stergere(int x)
             break;
         }
     }
-    if(cur->dr==NULL&&cur->st==NULL){
+    if(cur->dr==NULL&&cur->st==NULL){///nodul este frunza
         cur2->dr=NULL;
         cur2->st=NULL;
         delete cur;
@@ -109,16 +108,25 @@ void ABC::stergere(int x)
     else if(cur->dr!=NULL&&cur->st!=NULL){
         cur2=cur;
         cur=cur->st;
-        while(cur->dr->dr!=NULL){
+        if(cur->dr!=NULL)
+        {
+            while(cur->dr->dr!=NULL){
             cur=cur->dr;
         }
-        cur2->val=cur->dr->val;
-        cur2=cur;
-        cur=cur->dr;
-        cur2->dr=cur->st;
+            cur2->val=cur->dr->val;
+            cur2=cur;
+            cur=cur->dr;
+            cur2->dr=cur->st;
+        }
+        else
+        {
+            cur2->val=cur->val;
+            cur2->st=cur->st;
+        }
+        cur->st=NULL;
         delete cur;
     }
-    else if(cur!=NULL){
+    else if(cur!=NULL){///nodul are un singur copil
         cur2=cur;
         if(cur->dr!=NULL)
             cur=cur->dr;
@@ -144,4 +152,11 @@ void ABC::frunze(Nod *a)
         frunze(a->dr);
     if(a->dr==NULL&&a->st==NULL)
         cout<<a->val<<' ';
+}
+ABC::~ABC()
+{
+    while(this->root)
+    {
+        this->stergere(this->root->val);
+    }
 }

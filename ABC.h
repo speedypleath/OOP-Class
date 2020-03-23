@@ -11,9 +11,12 @@ private:
     Nod *dr;
 public:
     Nod(int val=0);
+    inline Nod(const Nod&a){val=a.val;dr=a.dr;st=a.st;}
     int get_val()const;
     Nod& get_st()const;
     Nod& get_dr()const;
+    inline ~Nod(){delete dr;delete st;}
+    void operator =(Nod);
 };
 class ABC{
 private:
@@ -30,5 +33,6 @@ public:
     void stergere(int);
     int inaltime(Nod *);
     void frunze(Nod*);
+    ~ABC();
 };
 #endif // ABC_H_INCLUDED
