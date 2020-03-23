@@ -16,10 +16,11 @@ int main()
     cout<<ob;
     ob.frunze(ob.get_root());
     cout<<endl;
-    ob.stergere(2);
     ob.stergere(7);
-    cin>>ob>>ob>>ob>>ob;
-    cout<<endl<<ob.inaltime(ob.get_root());
+    ob.stergere(1);
+    cout<<ob;
+    ob.~ABC();
     cout<<endl<<ob;
     return 0;
 }
+
