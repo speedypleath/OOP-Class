@@ -4,22 +4,15 @@ using namespace std;
 
 int main()
 {
-    Nod c1;
-    ABC ob;
-    ob+7;
-    ob+3;
-    ob+1;
-    ob+2;
-    ob+6;
-    ob+5;
-    ob+9;
-    cout<<ob;
-    ob.frunze(ob.get_root());
-    cout<<endl;
-    ob.stergere(7);
-    ob.stergere(1);
-    cout<<ob;
-    ob.~ABC();
-    cout<<endl<<ob;
+    int n,x,i,j;
+    cout<<"nr obiecte:";cin>>n;
+    ABC ob[n];
+    for(i=0;i<n;i++)
+    {
+        cout<<"nr noduri:";cin>>x;
+        for(j=0;j<x;j++)
+            cin>>ob[i];
+        cout<<ob[i];
+    }
     return 0;
 }
