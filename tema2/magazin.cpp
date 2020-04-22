@@ -26,7 +26,17 @@ void Produs::afisare(ostream & out)
 }
 void Produs::citire(istream &in)
 {
-    in>>pret>>cost>>stoc;
+    cout<<"pret:";in>>pret;cout<<"cost:";in>>cost;
+    do{
+    try{
+    cout<<"stoc:";in>>stoc;
+    if(!stoc)
+        throw(stoc);
+    }
+    catch(...){cout<<"Stocul nu poate sa fie 0!!!\n";}
+    }while(!stoc);
+    caracteristici.clear();
+    caracteristici.push_back(nume_produs());
 }
 Produs::Produs(Produs& other)
 {
@@ -73,7 +83,8 @@ void Bere::afisare(ostream & out)
 void Bere::citire(istream &in)
 {
     Produs::citire(in);
-    in>>brand>>tip;
+    cout<<"brand:";in>>brand;cout<<"tip:";in>>tip;
+    caracteristici.push_back(brand);caracteristici.push_back(tip);
 }
 Bere& Bere::operator =(Bere& other)
 {
@@ -92,7 +103,8 @@ void Faina::afisare(ostream &out)
 void Faina::citire(istream &in)
 {
     Produs::citire(in);
-    in>>calitate;
+    cout<<"calitate:";in>>calitate;
+    caracteristici.push_back(calitate);
 }
 Faina& Faina::operator=(Faina& other)
 {
@@ -110,7 +122,8 @@ void Cartofi::afisare(ostream &out)
 void Cartofi::citire(istream &in)
 {
     Produs::citire(in);
-    in>>tip;
+    cout<<"tip:";in>>tip;
+    caracteristici.push_back(tip);
 }
 Cartofi& Cartofi::operator=(Cartofi& other)
 {
@@ -126,7 +139,10 @@ void Vin::afisare(ostream &out)
 void Vin::citire(istream &in)
 {
     Produs::citire(in);
-    in>>tip;
+    cout<<"tip:";in.ignore();getline(in,tip);
+    istringstream iss(tip);
+    vector<string> results(istream_iterator<string>{iss},istream_iterator<string>());
+    caracteristici.insert(caracteristici.begin(),results.begin(),results.end());
 }
 Vin& Vin::operator=(Vin& other)
 {
@@ -153,7 +169,8 @@ void Soi::afisare(ostream &out)
 void Soi::citire(istream &in)
 {
     Vin::citire(in);
-    cin>>an>>brand>>tara;
+    cout<<"an:";in>>an;cout<<"brand:";in>>brand;cout<<"tara:";in>>tara;
+    caracteristici.push_back(an);caracteristici.push_back(brand);caracteristici.push_back(tara);
 }
 Soi& Soi::operator=(Soi& other)
 {
@@ -170,8 +187,11 @@ void Jucarie::afisare(ostream &out)
 }
 void Jucarie::citire(istream &in)
 {
-    Produs::citire(in);
-    in>>nume;
+    stoc = 1;
+    cout<<"pret:";in>>pret;
+    cout<<"cost:";in>>cost;
+    cout<<"nume:";in>>nume;
+    caracteristici.push_back(nume);
 }
 Jucarie& Jucarie::operator=(Jucarie& other)
 {
