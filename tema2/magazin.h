@@ -4,11 +4,11 @@
 using namespace std;
 class Produs
 {
+protected:
     float pret;
     float cost;
     unsigned stoc;
     std::string unitate_masura;
-protected:
     vector <string> caracteristici;
 public:
     Produs(float p=0,float c=0, unsigned s=0,std::string u=""):pret(p),cost(c),stoc(s),unitate_masura(u){}
@@ -91,7 +91,6 @@ class Varsat: public Vin
 public:
     Varsat(float p=0,float c=0, unsigned s=0, string t="rosu sec"):Vin(p,c,s,t,"Vol"){caracteristici.push_back("varsat");}
     Varsat(Varsat &other):Vin(other){}
-    virtual string nume_produs() override {return Vin::nume_produs()+" varsat";}
     void afisare(ostream &out) override;
 };
 class Soi: public Vin
@@ -102,7 +101,6 @@ class Soi: public Vin
 public:
     Soi(float p=0,float c=0, unsigned s=0, string t="rosu sec",string a=0,string ta="",string b=""):Vin(p,c,s,t,"Buc"),an(a),tara(ta),brand(b){caracteristici.push_back("soi");caracteristici.push_back(a);caracteristici.push_back(ta);caracteristici.push_back(b);}
     Soi(Soi &other):Vin(other){}
-    virtual string nume_produs() override {return Vin::nume_produs()+" de soi";}
     void afisare(ostream &out) override;
     void citire(istream &in) override;
     Soi& operator=(Soi &other);
