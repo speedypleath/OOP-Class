@@ -25,7 +25,8 @@ public:
     friend ostream & operator <<(ostream & out,Masina& ob);
     friend istream & operator >>(istream & in,Masina& ob);
     virtual void check()=0;
-    string get_name(){return nume;}
+    string get_name() const{return nume;}
+    int get_pret() const{return pret;}
     bool operator ==(const Masina& a){return nume==a.nume;}
 };
 class Mini: public Masina{
@@ -63,7 +64,7 @@ public:
 template <class T>
 class Vanzare{
     unsigned nr_stoc,nr_vandute;
-    vector<pair<T*,bool>> *stoc = new vector<pair<T*,bool>>,*vandute;
+    vector<pair<T*,bool>> *stoc = new vector<pair<T*,bool>>,*vandute = new vector<pair<T*,bool>>;
 public:
     Vanzare():nr_stoc(0),nr_vandute(0){}
     void vanzare(T* a)
@@ -71,6 +72,7 @@ public:
         auto it = stoc->begin();
         while(it != stoc->end())
             if(*it->first==*a){
+                vandute->push_back(*it);
                 it = stoc->erase(it);
                 nr_stoc--;
                 nr_vandute++;
@@ -84,12 +86,13 @@ public:
         nr_stoc++;
     }
     void afis_stoc(){for(auto it:*stoc)cout<<it.first->get_name()<<' ';}
+    void afis_vandute(){for(auto it:*vandute)cout<<it.first->get_name()<<' '<<it.second<<' ';}
 };
 template<>
 class Vanzare<Monovolum>{
     unsigned nr_stoc,nr_vandute;
-    vector<pair<Monovolum,bool>> *stoc = new vector<pair<Monovolum,bool>>,*vandute;
 public:
+    vector<pair<Monovolum,bool>> *stoc = new vector<pair<Monovolum,bool>>,*vandute = new vector<pair<Monovolum,bool>>;
     Vanzare():nr_stoc(0),nr_vandute(0){}
     void vanzare(Monovolum a,unsigned luna)
     {
@@ -97,6 +100,7 @@ public:
         auto it = stoc->begin();
         while(it != stoc->end())
             if(it->first==a){
+                vandute->push_back(*it);
                 it = stoc->erase(it);
                 nr_stoc--;
                 nr_vandute++;
@@ -113,6 +117,7 @@ public:
         nr_stoc++;
     }
     void afis_stoc(){for(auto it:*stoc)cout<<it.first.get_name()<<' '<<it.second<<' ';}
+    void afis_vandute(){for(auto it:*vandute)cout<<it.first.get_name();}
 };
 class User
 {
@@ -135,7 +140,7 @@ public:
         cin>>n;
         for(int i=0;i<n;i++){
             string tip;
-            cout<<"tip";cin>>tip;
+            cout<<"tip:";cin>>tip;
             if(tip == "mini")
             {
                 Masina *a = new Mini;
@@ -165,10 +170,39 @@ public:
             }
         }
     }
+    void vanzare()
+    {
+        cout<<"VANZARE"<<endl;
+        string tip,nume;
+        cout<<"tip:";cin>>tip;
+        cout<<"nume:";cin>>nume;
+            if(tip == "mini")
+            {
+                Masina *a = new Mini(nume);
+                masini.vanzare(a);
+            }
+            else if(tip == "mica")
+            {
+                Masina *a = new Mica(nume);
+                masini.vanzare(a);
+            }
+            else if(tip == "compacta")
+            {
+                Masina *a = new Compacta(nume);
+                masini.vanzare(a);
+            }
+            else if(tip == "monovolum")
+            {
+                Monovolum a(nume);
+                mono.vanzare(a,7);
+            }
+    }
     void stoc()
     {
         cout<<"Masini:";masini.afis_stoc();
         cout<<endl<<"Monovolume:";mono.afis_stoc();
+        cout<<endl<<"Masini vandute:";masini.afis_vandute();
+        cout<<endl<<"Monovolume vandute:";mono.afis_vandute();
     }
 };
 #endif // PARC_H_INCLUDED
