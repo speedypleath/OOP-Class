@@ -9,6 +9,6 @@ int main()
     unique_ptr<User> a(User::get_instance());
     a->create();
     a->vanzare();
-    a->vanzare();
+  //  a->vanzare();
     a->stoc();
 }

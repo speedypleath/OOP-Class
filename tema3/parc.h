@@ -16,7 +16,6 @@ protected:
     int litraj;
 public:
     Masina(string n="",float l=0, int li=0,int p=0):nume(n),lungime(l),litraj(li),pret(p){}
-    Masina(const Masina &a){nume = a.nume;}
     static Masina* create(float l,float li);
     virtual string masina()=0;
     virtual ~Masina()=0;
@@ -85,8 +84,26 @@ public:
         stoc->push_back(make_pair(a,true));
         nr_stoc++;
     }
-    void afis_stoc(){for(auto it:*stoc)cout<<it.first->get_name()<<' ';}
-    void afis_vandute(){for(auto it:*vandute)cout<<it.first->get_name()<<' '<<it.second<<' ';}
+    void afis_stoc()
+    {
+        for(auto it:*stoc)
+            if(Mini *a = dynamic_cast<Mini*>(it.first))
+                cout<<*a;
+            else if(Mica *a = dynamic_cast<Mica*>(it.first))
+                cout<<*a;
+            else if(Compacta *a = dynamic_cast<Compacta*>(it.first))
+                cout<<*a;
+    }
+    void afis_vandute()
+    {
+        for(auto it:*vandute)
+                if(Mini *a = dynamic_cast<Mini*>(it.first))
+                    cout<<*a;
+                else if(Mica *a = dynamic_cast<Mica*>(it.first))
+                    cout<<*a;
+                else if(Compacta *a = dynamic_cast<Compacta*>(it.first))
+                    cout<<*a;
+    }
 };
 template<>
 class Vanzare<Monovolum>{
@@ -94,12 +111,14 @@ class Vanzare<Monovolum>{
 public:
     vector<pair<Monovolum,bool>> *stoc = new vector<pair<Monovolum,bool>>,*vandute = new vector<pair<Monovolum,bool>>;
     Vanzare():nr_stoc(0),nr_vandute(0){}
-    void vanzare(Monovolum a,unsigned luna)
+    void vanzare(Monovolum a)
     {
-        a.discount(luna);
+        unsigned luna;
+        cout<<"luna:";cin>>luna;
         auto it = stoc->begin();
         while(it != stoc->end())
             if(it->first==a){
+                it->first.discount(luna);
                 vandute->push_back(*it);
                 it = stoc->erase(it);
                 nr_stoc--;
@@ -109,15 +128,15 @@ public:
             else
                 it++;
     }
-    void actualizare(Monovolum a){
+    void actualizare(Monovolum& a){
         if(a.sh())
             stoc->push_back(make_pair(a,false));
         else
             stoc->push_back(make_pair(a,true));
         nr_stoc++;
     }
-    void afis_stoc(){for(auto it:*stoc)cout<<it.first.get_name()<<' '<<it.second<<' ';}
-    void afis_vandute(){for(auto it:*vandute)cout<<it.first.get_name();}
+    void afis_stoc(){for(auto it:*stoc)cout<<it.first;}
+    void afis_vandute(){for(auto it:*vandute)cout<<it.first;}
 };
 class User
 {
@@ -194,8 +213,9 @@ public:
             else if(tip == "monovolum")
             {
                 Monovolum a(nume);
-                mono.vanzare(a,7);
+                mono.vanzare(a);
             }
+
     }
     void stoc()
     {
