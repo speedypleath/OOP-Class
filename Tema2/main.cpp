@@ -1,6 +1,6 @@
 #include <iostream>
 #include "magazin.h"
-#include "ABC.H"
+
 using namespace std;
 int main()
 {
